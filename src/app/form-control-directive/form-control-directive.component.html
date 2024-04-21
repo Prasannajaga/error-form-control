@@ -1,9 +1,44 @@
+<section >
 
-<form [formGroup]="personForm" appFormControl>
+  <form class="flex" [formGroup]="personForm" appFormControl [errorTextArray]="Errors" #data="formControl">
 
-  <div id="name"><input type="text" formControlName="name"></div>
-  <div id="email"><input type="text" formControlName="email"></div>
-  <div id="age"><input type="text" formControlName="age"></div>
+    <div id="name">
+      <label for="">Name </label>
+      <input type="text" formControlName="name">
+    </div>
+    <div id="email">
+      <label for="">Email </label>
+      <input type="text" formControlName="email">
+    </div>
+    <div id="age">
+      <label for="">Age </label>
+      <input type="text" formControlName="age">
+    </div>
 
+    <div>
+      <button (click)="remove(data)">  remove All Validators</button>
+      <button (click)="setValidators(data)">  Set Validators</button>
+      <button (click)="removeByOne(data , 'name')">  remove Name error</button>
+    </div>
 
-</form>
+  <!-- <div class="flex row">
+
+    <input placeholder="Enter your FormControl Name here" type="text" [(ngModel)]="CONTROL_NAME" [ngModelOptions]="{standalone : true}">
+
+    <label >
+      Select Error Type
+      <select  [(ngModel)]="ERROR_TYPE" [ngModelOptions]="{standalone : true}">
+        <option value="required">Required</option>
+        <option value="maxlength">Max Length</option>
+      </select>
+    </label>
+
+  </div>
+
+  <div class="flex row">
+    <button (click)="setValidators(data)"> Set Validators </button>
+    <button (click)="removeValidators(data)"> remove Validators </button>
+  </div> -->
+
+  </form>
+</section>
