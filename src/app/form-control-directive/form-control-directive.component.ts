@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ErrorConfig, FormControlDirective } from '../directives/form-control.directive';
+import { ErrorConfig, ErrorControlDirective } from 'error-control';
 
 @Component({
   selector: 'app-form-control-directive',
   templateUrl: './form-control-directive.component.html',
-  styleUrls: ['./form-control-directive.component.scss']
+  styleUrls: ['./form-control-directive.component.scss'],
 })
 export class FormControlDirectiveComponent implements OnInit {
 
@@ -31,7 +31,8 @@ export class FormControlDirectiveComponent implements OnInit {
       className : 'yellow' ,
       style : {
         "background" : "yellow",
-        "color"  : "red"
+        "color"  : "red",
+
       }
     },
     {
@@ -51,30 +52,33 @@ export class FormControlDirectiveComponent implements OnInit {
     this.personForm =  this.formbuilder.group({
       name : ["" , [Validators.required , Validators.minLength(4), Validators.maxLength(10)]],
       email : [""],
+      dob : [""],
       age : ["" ,[ Validators.required , Validators.maxLength(10)]]
     });
   }
 
-  removeValidators(data : FormControlDirective){
+  removeValidators(data : ErrorControlDirective){
     if(this.CONTROL_NAME){
       data.removeValidators(this.CONTROL_NAME);
     }
   }
 
-  setValidators(data : FormControlDirective){
-    this.personForm.get('email')?.setValidators([Validators.maxLength(10)]);
-    this.personForm.get('email')?.updateValueAndValidity();
+  setValidators(data : ErrorControlDirective ){
+    // this.personForm.get('email')?.setValidators([Validators.maxLength(10)]);
+    // this.personForm.get('email')?.updateValueAndValidity();
+    data.setValidators('dob' , [Validators.required]);
+
   }
 
 
 
-  remove(data : FormControlDirective){
+  remove(data : ErrorControlDirective){
     data.removeAllValidators();
   }
 
-  removeByOne(data : FormControlDirective, d : string){
+  removeByOne(data : ErrorControlDirective, d : string){
     data.removeValidators(d)
-  }
+   }
 
 
 

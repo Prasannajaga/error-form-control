@@ -3,16 +3,15 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormControlDirective } from './directives/form-control.directive';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule} from '@angular/common/http';
 import { FormControlDirectiveComponent } from './form-control-directive/form-control-directive.component';
+import { ErrorControlModule } from 'error-control';
 
 @NgModule({
   declarations: [
     AppComponent,
-    FormControlDirective ,
-    FormControlDirectiveComponent
+    FormControlDirectiveComponent,
   ],
   imports: [
     BrowserModule,
@@ -20,9 +19,11 @@ import { FormControlDirectiveComponent } from './form-control-directive/form-con
     FormsModule,
     ReactiveFormsModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    ErrorControlModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

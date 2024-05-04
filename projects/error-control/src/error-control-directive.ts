@@ -2,10 +2,8 @@ import {
   Directive,
   ElementRef,
   HostListener,
-  OnChanges,
-  SimpleChanges,
 } from '@angular/core';
-import { FormControlName, FormGroupDirective } from '@angular/forms';
+import { FormControlName, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
 
 export type ErrorConfig = {
   type: string;
@@ -16,12 +14,43 @@ export type ErrorConfig = {
 };
 
 @Directive({
-  selector: '[appFormControl]',
-  exportAs: 'formControl',
-  inputs: ['errorTextArray'],
+  selector: '[errorControl]',
+  exportAs: 'errorControl',
+  inputs: ['errors'],
 })
-export class FormControlDirective {
-  errorTextArray: Array<ErrorConfig> = [];
+export class ErrorControlDirective {
+  errors: Array<ErrorConfig> = [
+    {
+     type : "required",
+     message : "field is required" ,
+     style : {
+       "color" : "red"
+     }
+   },
+   {
+     type : "maxLength",
+     message : "exceeds the limit",
+     className : "red",
+     style : {
+       "color" : "red"
+     }
+   },
+   {
+     type : "minLength",
+     message : "Minimum required",
+     style : {
+       color : "red"
+     }
+   },
+   {
+     type : "pattern",
+     message : "invalid type",
+     style : {
+       "color" : "red"
+     }
+   }
+  ];
+
   private activeElement !: string;
   errorFiels: Array<any | string> = [];
 
@@ -77,7 +106,8 @@ export class FormControlDirective {
     if (control && control.errors) {
       Object.keys(control.errors).map((type: string) => {
         const div = this.createErrorElement(control, type);
-        form?.appendChild(div);
+        form?.parentNode?.insertBefore(div , form.nextSibling);
+        console.log(form);
         console.log('required Errors', type);
       });
     }
@@ -89,12 +119,14 @@ export class FormControlDirective {
     if(error){
       div.className = error.className || 'red';
       let style  = error.style;
-      Object.keys(error.style as any).forEach((property:any) => {
-        property = property as CSSStyleDeclaration;
-        if(style){
-          div.style[property] = style[property] as string;
-        }
-      });
+      if(style){
+        Object.keys(style as any).forEach((property:any) => {
+          property = property as CSSStyleDeclaration;
+          if(style){
+            div.style[property] = style[property] as string;
+          }
+        });
+      }
       div.id = this.getIdFormat(control);
       div.innerHTML = error.message;
     }
@@ -106,13 +138,12 @@ export class FormControlDirective {
     const controls = this.formgroup.directives.find(
       (val: FormControlName) => val.name?.toString().toLowerCase() === name
     );
-
     return controls ? controls : undefined;
   }
 
   getTextBasedOnErrorTypes(val: string): ErrorConfig {
-    if (this.errorTextArray && this.errorTextArray.length > 0) {
-        const isValid = this.errorTextArray.find(
+    if (this.errors && this.errors.length > 0) {
+        const isValid = this.errors.find(
           (data: ErrorConfig) => data.type.toLowerCase() === val.toLowerCase()
         );
 
@@ -144,6 +175,15 @@ export class FormControlDirective {
     }
   }
 
+  setValidators(name: string , error : ValidatorFn | ValidatorFn[]) {
+    const data : FormControlName = this.getFormControlByName(name);
+    console.log(data);
+    if (data) {
+       data.control.setValidators(error);
+       data.control.updateValueAndValidity();
+    }
+  }
+
   removeValidators(name: string) {
     const data = this.getFormControlByName(name);
     if (data) {
@@ -162,8 +202,22 @@ export class FormControlDirective {
         const id = this.getIdFormat(con);
         if (id) {
           document.getElementById(id)?.remove();
+          con.control.clearValidators();
+          con.control.updateValueAndValidity();
         }
       });
     }
   }
+
+  setAllRequiredValidators() {
+    const controls: Array<FormControlName> = this.formgroup.directives;
+    if (controls) {
+      controls.forEach((con) => {
+          con.control.setValidators([Validators.required]);
+          con.control.updateValueAndValidity();
+      });
+    }
+  }
+
+
 }

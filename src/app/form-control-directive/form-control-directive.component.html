@@ -1,25 +1,30 @@
 <section >
 
-  <form class="flex" [formGroup]="personForm" appFormControl [errorTextArray]="Errors" #data="formControl">
+  <form class="flex" [formGroup]="personForm" errorControl [errors]="Errors"  #data="errorControl">
 
-    <div id="name">
+    <div >
       <label for="">Name </label>
-      <input type="text" formControlName="name">
+      <input id="name" type="text" formControlName="name">
+      <div></div>
     </div>
-    <div id="email">
+    <div>
       <label for="">Email </label>
-      <input type="text" formControlName="email">
+      <input id="email" type="text" formControlName="email">
     </div>
-    <div id="age">
+    <div>
       <label for="">Age </label>
-      <input type="text" formControlName="age">
+      <input id="age" type="text" formControlName="age">
+    </div>
+    <div >
+      <label for="">DOB </label>
+      <input id="dob" type="text" formControlName="dob">
     </div>
 
-    <div>
+    <!-- <div>
       <button (click)="remove(data)">  remove All Validators</button>
       <button (click)="setValidators(data)">  Set Validators</button>
       <button (click)="removeByOne(data , 'name')">  remove Name error</button>
-    </div>
+    </div> -->
 
   <!-- <div class="flex row">
 
