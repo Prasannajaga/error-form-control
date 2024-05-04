@@ -91,10 +91,10 @@ const err : Array<ErrorConfig> = [
    }
   ];
 
-````
+```` 
 
 
-make sure you pass the modified array as input. like this in your component
+make sure you pass the modified array as input. like this in your  component
 
 
 ````html 
