@@ -1,27 +1,107 @@
-# AngularAwe
+# ErrorControl
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.3.
+Handle your Reactive forms validation with ps-error-control.
 
-## Development server
+## Example
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Step 1 => Initialize your formGroup;
 
-## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Step 2 => define the errorControl in place where you mention the Formgroup Element;
 
-## Build
+Note : Make sure to add the id to your input element same as your formControlName
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+That's it , it will take care of the validation for you. 
 
-## Running unit tests
+component.html 
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+````html
+ <form [formGroup]="detailForm" errorControl >
 
-## Running end-to-end tests
+    <div >
+      <label for="">Name </label>
+      <input id="name" type="text" formControlName="name">
+    </div> 
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+    <div>
+      <label for="">Age </label>
+      <input id="age" type="text" formControlName="age">
+    </div> 
 
-## Further help
+  </form>
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+````
+
+component.ts 
+
+````ts
+export class App{
+
+ form !: FormGroup;
+ constructor(private formbuilder : FormBuilder){}
+
+  ngOnInit(): void {
+    this.detailForm =  this.formbuilder.group({
+      name : ["" , [Validators.required , Validators.minLength(4) ]], 
+      age : ["" ,[ Validators.required , Validators.maxLength(4) ]]
+    });
+  }
+
+}
+
+```` 
+
+
+## Customization 
+
+````ts
+// The default errors looks like this
+
+// feel free to modify the array based on your needs
+
+const err : Array<ErrorConfig> = [
+    {
+     type : "required",
+     message : "field is required" , 
+     style : {
+       "color" : "red"
+     }
+   },
+   {
+     type : "maxLength",
+     message : "exceeds the limit",
+     className : "red",
+     style : {
+       "color" : "red"
+     }
+   },
+   {
+     type : "minLength",
+     message : "Minimum required",
+     style : {
+       color : "red"
+     }
+   },
+   {
+     type : "pattern",
+     message : "invalid type",
+     style : {
+       "color" : "red"
+     }
+   }
+  ];
+
+````
+
+
+make sure you pass the modified array as input. like this in your component
+
+
+````html 
+ <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
+ </form>
+
+````
+
+## Github
+[github](https://github.com/Prasannajaga/error-form-control.git).
