@@ -104,4 +104,4 @@ make sure you pass the modified array as input. like this in your component
 ````
 
 ## Github
-[github](https://github.com/Prasannajaga/error-form-control.git).
+[github](https://github.com/Prasannajaga/error-form-control.git)
