@@ -14,8 +14,9 @@
     "url": "https://github.com/Prasannajaga/error-form-control.git"
   },
   "dependencies": {
+    "ps-error-control": "file:",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
-  "license" : "MIT"
+  "license": "MIT"
 }

@@ -1,0 +1,51 @@
+<section >
+
+  <form class="flex" [formGroup]="personForm" errorControl [errors]="Errors"  #data="errorControl">
+
+    <div >
+      <label for="">Name </label>
+      <input id="name" type="text" formControlName="name">
+      <div></div>
+    </div>
+    <div>
+      <label for="">Email </label>
+      <input id="email" type="text" formControlName="email">
+    </div>
+    <div>
+      <label for="">Age </label>
+      <input id="age" type="text" formControlName="age">
+    </div>
+    <div >
+      <label for="">DOB </label>
+      <input id="dob" type="text" formControlName="dob">
+    </div>
+
+    <button (click)="addSkills()">add skill</button>
+    <button (click)="addPpl()">add ppl</button>
+
+    <h2>Skills</h2>
+
+    <div libArrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="skills" style="display: flex;flex-direction: column;gap: 10px;">
+      <div *ngFor="let skill of skillArrControl; let i = index" >
+        <div [formGroupName]="i" style="display: flex;gap: 10px;">
+          <div><input id="skill-{{i}}" type="text" formControlName="skill"></div>
+          <div><input id="experience-{{i}}" type="text" formControlName="experience"></div>
+          <button (click)="remove(i)">remove</button>
+        </div>
+      </div>
+    </div>
+
+    <h2>People</h2>
+
+    <div libArrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="people" style="display: flex;flex-direction: column;gap: 10px;">
+      <div *ngFor="let ppl of pepoleArrControl; let i = index" >
+        <div [formGroupName]="i" style="display: flex;gap: 10px;">
+          <div><input id="name-{{i}}" type="text" formControlName="name"></div>
+          <div><input id="address-{{i}}" type="text" formControlName="address"></div>
+          <button (click)="removeppl(i)">remove</button>
+        </div>
+      </div>
+    </div>
+
+  </form>
+</section>

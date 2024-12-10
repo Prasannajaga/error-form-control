@@ -1,16 +1,23 @@
 import { NgModule } from '@angular/core';
 import { ErrorControlDirective } from '../error-control-directive';
+import { ArrayControlDirective } from '../array-control.directive';
+import { ErrorService } from '../errorService';
 
 
 
 @NgModule({
   declarations: [
-    ErrorControlDirective
+    ErrorControlDirective,
+    ArrayControlDirective,
   ],
   imports: [
   ],
   exports: [
-    ErrorControlDirective
+    ErrorControlDirective,
+    ArrayControlDirective
+  ],
+  providers : [
+    ErrorService
   ]
 })
 export class ErrorControlModule { }

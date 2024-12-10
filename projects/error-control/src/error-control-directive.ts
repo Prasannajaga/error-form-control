@@ -2,8 +2,14 @@ import {
   Directive,
   ElementRef,
   HostListener,
+  inject,
+  Renderer2,
+  ViewChild,
 } from '@angular/core';
-import { FormControlName, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
+import { FormArray, FormControlName, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
+import { DEFAULT_ERRORS } from './Constants';
+import { ArrayControlDirective } from './array-control.directive';
+import { ErrorService } from './errorService';
 
 export type ErrorConfig = {
   type: string;
@@ -19,55 +25,37 @@ export type ErrorConfig = {
   inputs: ['errors'],
 })
 export class ErrorControlDirective {
-  errors: Array<ErrorConfig> = [
-    {
-     type : "required",
-     message : "field is required" ,
-     style : {
-       "color" : "red"
-     }
-   },
-   {
-     type : "maxLength",
-     message : "exceeds the limit",
-     className : "red",
-     style : {
-       "color" : "red"
-     }
-   },
-   {
-     type : "minLength",
-     message : "Minimum required",
-     style : {
-       color : "red"
-     }
-   },
-   {
-     type : "pattern",
-     message : "invalid type",
-     style : {
-       "color" : "red"
-     }
-   }
-  ];
+  errors: Array<ErrorConfig> =  DEFAULT_ERRORS;
 
   private activeElement !: string;
+  errorService = inject(ErrorService);
   errorFiels: Array<any | string> = [];
+  @ViewChild(ArrayControlDirective , { static : true }) arrayControlDirective !: ArrayControlDirective;
 
   constructor(
     private element: ElementRef,
-    private formgroup: FormGroupDirective
-  ) {}
+    private renderer: Renderer2,
+    private formgroup: FormGroupDirective,
+  ) {
+
+  }
 
   @HostListener('keyup', ['$event']) onchange(event: any) {
+
     const focusedName = event.target.getAttribute('formcontrolname');
     const controls: Array<FormControlName> = this.formgroup.directives;
 
     if (controls) {
       controls.forEach((control: FormControlName, index: number) => {
+
+        const formArr = control.control.parent?.parent;
+        // if the control is formArray restrict and break here
+        if(formArr instanceof FormArray){
+          return;
+        }
+
         const { errors, invalid, name, touched, dirty } = control;
         let controlHasErrors = false;
-
         if (errors) {
           controlHasErrors = Object.keys(errors).length > 0 ? true : false;
         }
@@ -93,6 +81,7 @@ export class ErrorControlDirective {
           this.removeElement(control);
           this.handleErrorTypes(control, index);
         }
+
       });
     }
   }
@@ -107,15 +96,13 @@ export class ErrorControlDirective {
       Object.keys(control.errors).map((type: string) => {
         const div = this.createErrorElement(control, type);
         form?.parentNode?.insertBefore(div , form.nextSibling);
-        console.log(form);
-        console.log('required Errors', type);
       });
     }
   }
 
   createErrorElement(control: FormControlName, type: string): HTMLDivElement {
     const div = document.createElement('div');
-    const error = this.getTextBasedOnErrorTypes(type);
+    const error = this.errorService.getTextBasedOnErrorTypes(type);
     if(error){
       div.className = error.className || 'red';
       let style  = error.style;
@@ -141,20 +128,6 @@ export class ErrorControlDirective {
     return controls ? controls : undefined;
   }
 
-  getTextBasedOnErrorTypes(val: string): ErrorConfig {
-    if (this.errors && this.errors.length > 0) {
-        const isValid = this.errors.find(
-          (data: ErrorConfig) => data.type.toLowerCase() === val.toLowerCase()
-        );
-
-        if (isValid) {
-          return isValid;
-        } else throw new Error('errortype not found');
-    }
-    else {
-      throw new Error('given ErrorArr is undefined');
-    }
-  }
 
   get currentElement(): string {
     return this.activeElement;

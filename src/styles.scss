@@ -4,3 +4,18 @@
 .red{
   color: red;
 }
+
+
+.flex{
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+  align-items: center;
+  gap:1rem
+}
+
+
+.row{
+  flex-direction: row !important;
+  margin: 0;
+}
