@@ -128,6 +128,5 @@ const err : Array<ErrorConfig> = [
 ````
 
 
-
 ## Github
 [github](https://github.com/Prasannajaga/error-form-control.git).
