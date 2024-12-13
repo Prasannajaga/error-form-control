@@ -52,6 +52,40 @@ export class App{
 ```` 
 
 
+
+make sure you pass the modified array as input. like this in your component
+
+
+````html 
+ <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
+ </form>
+
+````
+
+
+## Form Array Handling 
+
+use arrayControl directive to handle your formArray errors 
+
+**Note** : make sure you add "formControlName-index" to handle the FormValidation efficiently
+
+error elememnt will be rendered on the nextSibling of respective formContorlName
+
+```html 
+
+    <div arrayControl #data="arrayControl" [errors]="Errors" formArrayName="skills">
+      <div *ngFor="let skill of skillArrControl; let i = index" >
+        <div [formGroupName]="i">
+          <div><input id="skill-{{i}}" type="text" formControlName="skill"></div>
+          <div><input id="experience-{{i}}" type="text" formControlName="experience"></div>
+          <button (click)="remove(i)">remove</button>
+        </div>
+      </div>
+    </div>
+
+```
+
+
 ## Customization 
 
 ````ts
@@ -94,14 +128,6 @@ const err : Array<ErrorConfig> = [
 ````
 
 
-make sure you pass the modified array as input. like this in your component
-
-
-````html 
- <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
- </form>
-
-````
 
 ## Github
 [github](https://github.com/Prasannajaga/error-form-control.git).

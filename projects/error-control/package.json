@@ -1,6 +1,6 @@
 {
-  "name": "ps-error-control",
-  "version": "0.0.6",
+  "name": "ng-forms-handler",
+  "version": "0.1.7",
   "peerDependencies": {
     "@angular/common": "^16.0.0",
     "@angular/core": "^16.0.0"
@@ -14,7 +14,7 @@
     "url": "https://github.com/Prasannajaga/error-form-control.git"
   },
   "dependencies": {
-    "ps-error-control": "file:",
+    "ng-forms-handler": "file:",
     "tslib": "^2.3.0"
   },
   "sideEffects": false,
