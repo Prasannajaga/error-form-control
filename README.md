@@ -123,10 +123,9 @@ const err : Array<ErrorConfig> = [
        "color" : "red"
      }
    }
-  ];
+  ]; 
 
 ````
-
-
+  
 ## Github
 [github](https://github.com/Prasannajaga/error-form-control.git).
