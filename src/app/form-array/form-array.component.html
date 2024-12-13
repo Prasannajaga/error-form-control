@@ -27,7 +27,7 @@
 
     <h2>Skills</h2>
 
-    <div libArrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="skills" style="display: flex;flex-direction: column;gap: 10px;">
+    <div arrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="skills" style="display: flex;flex-direction: column;gap: 10px;">
       <div *ngFor="let skill of skillArrControl; let i = index" >
         <div [formGroupName]="i" style="display: flex;gap: 10px;">
           <div><input id="skill-{{i}}" type="text" formControlName="skill"></div>
@@ -39,7 +39,7 @@
 
     <h2>People</h2>
 
-    <div libArrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="people" style="display: flex;flex-direction: column;gap: 10px;">
+    <div arrayControl #Adata="arrayControl" [errors]="Errors" formArrayName="people" style="display: flex;flex-direction: column;gap: 10px;">
       <div *ngFor="let ppl of pepoleArrControl; let i = index" >
         <div [formGroupName]="i" style="display: flex;gap: 10px;">
           <div><input id="name-{{i}}" type="text" formControlName="name"></div>

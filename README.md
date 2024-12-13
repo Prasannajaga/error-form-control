@@ -9,14 +9,14 @@ Step 1 => Initialize your formGroup;
 
 Step 2 => define the errorControl in place where you mention the Formgroup Element;
 
-Note : Make sure to add the id to your input element same as your formControlName
+**Note : Make sure to add the id to your input element same as your formControlName**
 
 That's it , it will take care of the validation for you. 
 
 component.html 
 
 ````html
- <form [formGroup]="detailForm" errorControl >
+ <form [formGroup]="detailForm" errorControl>
 
     <div >
       <label for="">Name </label>

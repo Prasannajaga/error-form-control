@@ -4,7 +4,7 @@ import { controlModule } from './controlModule';
 import { ErrorService } from './errorService';
 
 @Directive({
-  selector: '[libArrayControl]',
+  selector: '[arrayControl]',
   exportAs: 'arrayControl',
   inputs: ['errors'],
 })
