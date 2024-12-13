@@ -1,9 +1,7 @@
 import {
   Directive,
-  ElementRef,
   HostListener,
   inject,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { FormArray, FormControlName, FormGroupDirective, ValidatorFn, Validators } from '@angular/forms';
@@ -33,10 +31,9 @@ export class ErrorControlDirective {
   @ViewChild(ArrayControlDirective , { static : true }) arrayControlDirective !: ArrayControlDirective;
 
   constructor(
-    private element: ElementRef,
-    private renderer: Renderer2,
     private formgroup: FormGroupDirective,
   ) {
+
 
   }
 

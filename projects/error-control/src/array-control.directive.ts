@@ -8,18 +8,12 @@ import { ErrorService } from './errorService';
   exportAs: 'arrayControl',
   inputs: ['errors'],
 })
-export class ArrayControlDirective implements controlModule{
+export class ArrayControlDirective{
 
   errorService = inject(ErrorService);
-
   constructor(private formGroupDirective : FormGroupDirective) { }
 
-
-
-  ngOnInit(){
-      console.log(this.formGroupDirective);
-  }
-
+  ngOnInit(){}
 
   @HostListener('keyup', ['$event']) onchange(event: any) {
     const form : FormGroup = this.formGroupDirective.form;
@@ -60,15 +54,11 @@ export class ArrayControlDirective implements controlModule{
                 }
 
               }
-              // else if(errors > 1){
-              //   console.log("more than onee");
-              // }
 
             }
             else if(!controlHasErrors){
               focusedEle?.remove();
             }
-
 
           });
 
@@ -112,21 +102,6 @@ export class ArrayControlDirective implements controlModule{
 
   getIdFormat(d  : string , i : number) : string {
     return `${d}-${i}-${i + 1}`;
-  }
-
-
-
-  addError(d: any): void {
-    throw new Error('Method not implemented.');
-  }
-  addErrors(d: Array<any>): void {
-    throw new Error('Method not implemented.');
-  }
-  removeError(d: any): void {
-    throw new Error('Method not implemented.');
-  }
-  removeErrors(d: Array<any>): void {
-    throw new Error('Method not implemented.');
   }
 
 }

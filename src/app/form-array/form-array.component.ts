@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ErrorConfig } from 'error-control';
+import { ErrorConfig, ErrorControlDirective } from 'error-control';
 import { DEFAULT_ERRORS } from 'projects/error-control/src/Constants';
 
 @Component({
@@ -62,17 +62,30 @@ export class FormArrayComponent {
 
   returnPplFields() : FormGroup {
     return this.formbuilder.group({
-      name : ['' , [Validators.required , Validators.minLength(10)]],
+      name : ['' , [Validators.required]],
       address  : [''],
     });
   }
 
-  addPpl(){
+  addPpl(d : ErrorControlDirective){
     this.pplArr.push(this.returnPplFields());
+    d.setValidators('name' , [Validators.maxLength(10)])
   }
 
   removeppl(i : number){
     this.pplArr.removeAt(i);
+  }
+
+  setVal(){
+    this.skillArr.controls.forEach(x =>{
+      x.get('experience')?.setValidators([Validators.maxLength(5)])
+      x.get('experience')?.updateValueAndValidity()
+    });
+
+    this.personForm.get('email')?.markAsTouched();
+    this.personForm.get('email')?.setValidators(Validators.minLength(3));
+    // this.personForm.get('email')?.
+    this.personForm.get('email')?.updateValueAndValidity();
   }
 
 }
