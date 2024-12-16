@@ -1,6 +1,6 @@
 # ErrorControl
 
-Handle your Reactive forms validation with ps-error-control.
+Handle your Reactive forms validation with ng-forms-handler.
 
 ## Example
 
