@@ -4,21 +4,19 @@ Handle your Reactive forms validation with ps-error-control.
 
 ## Example
 
-1 . Initialize your formGroup
+Step 1 => Initialize your formGroup;
 
-2 . define the errorControl in place where you mention the Formgroup Element;
 
-Note : Make sure to add the id to your input element same as your formControlName
+Step 2 => define the errorControl in place where you mention the Formgroup Element;
 
-it will take care of the validatio and it will render the error element next to your input element.
+**Note : Make sure to add the id to your input element same as your formControlName**
 
-That's it , it's easy as that
-
+That's it , it will take care of the validation for you. 
 
 component.html 
 
 ````html
- <form [formGroup]="detailForm" errorControl >
+ <form [formGroup]="detailForm" errorControl>
 
     <div >
       <label for="">Name </label>
@@ -54,11 +52,46 @@ export class App{
 ```` 
 
 
+
+make sure you pass the modified array as input. like this in your component
+
+
+````html 
+ <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
+ </form>
+
+````
+
+
+## Form Array Handling 
+
+use arrayControl directive to handle your formArray errors 
+
+**Note** : make sure you add "formControlName-index" to handle the FormValidation efficiently
+
+error elememnt will be rendered on the nextSibling of respective formContorlName
+
+```html 
+
+    <div arrayControl #data="arrayControl" [errors]="Errors" formArrayName="skills">
+      <div *ngFor="let skill of skillArrControl; let i = index" >
+        <div [formGroupName]="i">
+          <div><input id="skill-{{i}}" type="text" formControlName="skill"></div>
+          <div><input id="experience-{{i}}" type="text" formControlName="experience"></div>
+          <button (click)="remove(i)">remove</button>
+        </div>
+      </div>
+    </div>
+
+```
+
+
 ## Customization 
 
-
 ````ts
-// The default errors looks like this, feel free to modify the array based on your needs. 
+// The default errors looks like this
+
+// feel free to modify the array based on your needs
 
 const err : Array<ErrorConfig> = [
     {
@@ -90,18 +123,9 @@ const err : Array<ErrorConfig> = [
        "color" : "red"
      }
    }
-  ];
+  ]; 
 
 ````
- 
-
-````html 
-<!-- make sure to pass the modified array as input. like this in your component -->
-
- <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
- </form>
-
-````
-
+  
 ## Github
-[github](https://github.com/Prasannajaga/error-form-control.git)  [linkedin](https://www.linkedin.com/in/prasanna-jaga-46227b260/)   [twitter](https://twitter.com/jaga_prasanna)
+[github](https://github.com/Prasannajaga/error-form-control.git).
