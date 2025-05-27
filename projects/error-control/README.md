@@ -1,131 +1,320 @@
-# ErrorControl
+# ps-error-control
 
-Handle your Reactive forms validation with ng-forms-handler.
+A lightweight directive for handling Reactive Forms validation in Angular applications. Simplify form error handling with the `errorControl` and `arrayControl` directives.
 
-## Example
+## Table of Contents
+- [Installation](#installation)
+- [Basic Usage](#basic-usage)
+  - [Step 1: Initialize FormGroup](#step-1-initialize-formgroup)
+  - [Step 2: Add errorControl Directive](#step-2-add-errorcontrol-directive)
+- [Form Array Handling](#form-array-handling)
+- [Customization](#customization)
+- [Example](#example)
+- [GitHub Repository](#github-repository)
 
-Step 1 => Initialize your formGroup;
+## Installation
 
+Install the package via npm:
 
-Step 2 => define the errorControl in place where you mention the Formgroup Element;
+```bash
+npm install ps-error-control
+```
 
-**Note : Make sure to add the id to your input element same as your formControlName**
+Import the module in your Angular application:
 
-That's it , it will take care of the validation for you. 
+```ts
+import { ErrorControlModule } from 'ps-error-control';
 
-component.html 
+@NgModule({
+  imports: [
+    ErrorControlModule,
+    // other imports
+  ],
+})
+export class AppModule {}
+```
 
-````html
- <form [formGroup]="detailForm" errorControl>
+## Basic Usage
 
-    <div >
-      <label for="">Name </label>
-      <input id="name" type="text" formControlName="name">
-    </div> 
+### Step 1: Initialize FormGroup
 
-    <div>
-      <label for="">Age </label>
-      <input id="age" type="text" formControlName="age">
-    </div> 
+In your component, create a `FormGroup` using Angular's `FormBuilder`. Define the form controls with the desired validators.
 
-  </form>
+```ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-````
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent implements OnInit {
+  detailForm!: FormGroup;
 
-component.ts 
-
-````ts
-export class App{
-
- form !: FormGroup;
- constructor(private formbuilder : FormBuilder){}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit(): void {
-    this.detailForm =  this.formbuilder.group({
-      name : ["" , [Validators.required , Validators.minLength(4) ]], 
-      age : ["" ,[ Validators.required , Validators.maxLength(4) ]]
+    this.detailForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(4)]],
+      age: ['', [Validators.required, Validators.maxLength(4)]],
+    });
+  }
+}
+```
+
+### Step 2: Add errorControl Directive
+
+In your template, apply the `errorControl` directive to the form element. Ensure each input's `id` matches its `formControlName`.
+
+```html
+<form [formGroup]="detailForm" errorControl>
+  <div>
+    <label for="name">Name</label>
+    <input id="name" type="text" formControlName="name">
+  </div>
+  <div>
+    <label for="age">Age</label>
+    <input id="age" type="text" formControlName="age">
+  </div>
+</form>
+```
+
+**Note**: The `id` attribute of each input must match the corresponding `formControlName` for the directive to work correctly.
+
+## Form Array Handling
+
+To handle validation errors in a `FormArray`, use the `arrayControl` directive. Ensure each input's `id` follows the format `formControlName-index`.
+
+### Example
+
+```html
+<div arrayControl #data="arrayControl" [errors]="errors" formArrayName="skills">
+  <div *ngFor="let skill of skillArrControl.controls; let i = index" [formGroupName]="i">
+    <div>
+      <input id="skill-{{i}}" type="text" formControlName="skill">
+    </div>
+    <div>
+      <input id="experience-{{i}}" type="text" formControlName="experience">
+    </div>
+    <button (click)="remove(i)">Remove</button>
+  </div>
+</div>
+```
+
+**Note**: Error messages will be rendered as the next sibling of the respective `formControlName` input.
+
+### Component Code for FormArray
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent implements OnInit {
+  detailForm!: FormGroup;
+
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.detailForm = this.formBuilder.group({
+      skills: this.formBuilder.array([]),
     });
   }
 
+  get skillArrControl(): FormArray {
+    return this.detailForm.get('skills') as FormArray;
+  }
+
+  addSkill(): void {
+    const skillGroup = this.formBuilder.group({
+      skill: ['', Validators.required],
+      experience: ['', Validators.required],
+    });
+    this.skillArrControl.push(skillGroup);
+  }
+
+  remove(index: number): void {
+    this.skillArrControl.removeAt(index);
+  }
 }
-
-```` 
-
-
-
-make sure you pass the modified array as input. like this in your component
-
-
-````html 
- <form [formGroup]="detailForm" errorControl [errors]="yourModifiedArray">
- </form>
-
-````
-
-
-## Form Array Handling 
-
-use arrayControl directive to handle your formArray errors 
-
-**Note** : make sure you add "formControlName-index" to handle the FormValidation efficiently
-
-error elememnt will be rendered on the nextSibling of respective formContorlName
-
-```html 
-
-    <div arrayControl #data="arrayControl" [errors]="Errors" formArrayName="skills">
-      <div *ngFor="let skill of skillArrControl; let i = index" >
-        <div [formGroupName]="i">
-          <div><input id="skill-{{i}}" type="text" formControlName="skill"></div>
-          <div><input id="experience-{{i}}" type="text" formControlName="experience"></div>
-          <button (click)="remove(i)">remove</button>
-        </div>
-      </div>
-    </div>
-
 ```
 
+## Customization
 
-## Customization 
+Customize error messages and styles by passing a modified error configuration array to the `errorControl` or `arrayControl` directive.
 
-````ts
-// The default errors looks like this
+### Default Error Configuration
 
-// feel free to modify the array based on your needs
+```ts
+const errors: Array<ErrorConfig> = [
+  {
+    type: 'required',
+    message: 'This field is required',
+    style: {
+      color: 'red',
+    },
+  },
+  {
+    type: 'minlength',
+    message: 'Minimum length required',
+    style: {
+      color: 'red',
+    },
+  },
+  {
+    type: 'maxlength',
+    message: 'Exceeds maximum length',
+    className: 'error-text',
+    style: {
+      color: 'red',
+    },
+  },
+  {
+    type: 'pattern',
+    message: 'Invalid format',
+    style: {
+      color: 'red',
+    },
+  },
+];
+```
 
-const err : Array<ErrorConfig> = [
+Pass the custom error array to the directive:
+
+```html
+<form [formGroup]="detailForm" errorControl [errors]="errors">
+  <!-- form fields -->
+</form>
+```
+
+### ErrorConfig Interface
+
+```ts
+interface ErrorConfig {
+  type: string;
+  message: string;
+  className?: string;
+  style?: { [key: string]: string };
+}
+```
+
+Modify the `errors` array to customize messages, CSS classes, or inline styles based on your application's needs.
+
+## Example
+
+### Complete Component Template
+
+```html
+<form [formGroup]="detailForm" errorControl [errors]="errors">
+  <div>
+    <label for="name">Name</label>
+    <input id="name" type="text" formControlName="name">
+  </div>
+  <div>
+    <label for="age">Age</label>
+    <input id="age" type="text" formControlName="age">
+  </div>
+  <div arrayControl #data="arrayControl" [errors]="errors" formArrayName="skills">
+    <div *ngFor="let skill of skillArrControl.controls; let i = index" [formGroupName]="i">
+      <div>
+        <input id="skill-{{i}}" type="text" formControlName="skill">
+      </div>
+      <div>
+        <input id="experience-{{i}}" type="text" formControlName="experience">
+      </div>
+      <button (click)="remove(i)">Remove</button>
+    </div>
+    <button (click)="addSkill()">Add Skill</button>
+  </div>
+</form>
+```
+
+### Complete Component Code
+
+```ts
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+})
+export class AppComponent implements OnInit {
+  detailForm!: FormGroup;
+  errors: Array<ErrorConfig> = [
     {
-     type : "required",
-     message : "field is required" , 
-     style : {
-       "color" : "red"
-     }
-   },
-   {
-     type : "maxLength",
-     message : "exceeds the limit",
-     className : "red",
-     style : {
-       "color" : "red"
-     }
-   },
-   {
-     type : "minLength",
-     message : "Minimum required",
-     style : {
-       color : "red"
-     }
-   },
-   {
-     type : "pattern",
-     message : "invalid type",
-     style : {
-       "color" : "red"
-     }
-   }
-  ]; 
+      type: 'required',
+      message: 'This field is required',
+      style: { color: 'red' },
+    },
+    {
+      type: 'minlength',
+      message: 'Minimum length required',
+      style: { color: 'red' },
+    },
+    {
+      type: 'maxlength',
+      message: 'Exceeds maximum length',
+      style: { color: 'red' },
+    },
+  ];
 
-````
-  
-## Github
-[github](https://github.com/Prasannajaga/error-form-control.git).
+  constructor(private formBuilder: FormBuilder) {}
+
+  ngOnInit(): void {
+    this.detailForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.minLength(4)]],
+      age: ['', [Validators.required, Validators.maxLength(4)]],
+      skills: this.formBuilder.array([]),
+    });
+  }
+
+  get skillArrControl(): FormArray {
+    return this.detailForm.get('skills') as FormArray;
+  }
+
+  addSkill(): void {
+    const skillGroup = this.formBuilder.group({
+      skill: ['', Validators.required],
+      experience: ['', Validators.required],
+    });
+    this.skillArrControl.push(skillGroup);
+  }
+
+  remove(index: number): void {
+    this.skillArrControl.removeAt(index);
+  }
+}
+
+interface ErrorConfig {
+  type: string;
+  message: string;
+  className?: string;
+  style?: { [key: string]: string };
+}
+```
+## Contribution
+
+We welcome contributions to `ps-error-control`! To contribute:
+
+1. **Fork the Repository**: Create a fork of the project on GitHub.
+2. **Clone and Set Up**: Clone your fork and install dependencies using `npm install`.
+3. **Make Changes**: Create a new branch for your feature or bug fix (`git checkout -b feature/your-feature`).
+4. **Test Your Changes**: Ensure your changes work and do not break existing functionality.
+5. **Submit a Pull Request**: Push your branch to your fork and create a pull request with a clear description of your changes.
+
+Please follow the Code of Conduct and ensure your code adheres to the project's coding standards.
+
+For bug reports or feature requests, open an issue on the GitHub repository.
+
+## GitHub Repository
+
+For more details, source code, and updates, visit the [GitHub repository](https://github.com/Prasannajaga/error-form-control.git).
+
+
+---
+
+Made with ❤️ by the [@Prasanna](https://github.com/Prasannajaga).
