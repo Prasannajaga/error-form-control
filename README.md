@@ -17,7 +17,7 @@ A lightweight directive for handling Reactive Forms validation in Angular applic
 Install the package via npm:
 
 ```bash
-npm install ng-forms-handler
+npm i ng-forms-handler
 ```
 
 Import the module in your Angular application:
