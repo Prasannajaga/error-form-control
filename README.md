@@ -1,4 +1,4 @@
-# ps-error-control
+# ng-forms-handler
 
 A lightweight directive for handling Reactive Forms validation in Angular applications. Simplify form error handling with the `errorControl` and `arrayControl` directives.
 
@@ -17,13 +17,13 @@ A lightweight directive for handling Reactive Forms validation in Angular applic
 Install the package via npm:
 
 ```bash
-npm install ps-error-control
+npm install ng-forms-handler
 ```
 
 Import the module in your Angular application:
 
 ```ts
-import { ErrorControlModule } from 'ps-error-control';
+import { ErrorControlModule } from 'ng-forms-handler';
 
 @NgModule({
   imports: [
@@ -298,7 +298,7 @@ interface ErrorConfig {
 ```
 ## Contribution
 
-We welcome contributions to `ps-error-control`! To contribute:
+We welcome contributions to `ng-forms-handler`! To contribute:
 
 1. **Fork the Repository**: Create a fork of the project on GitHub.
 2. **Clone and Set Up**: Clone your fork and install dependencies using `npm install`.
