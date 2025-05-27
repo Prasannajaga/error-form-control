@@ -296,7 +296,25 @@ interface ErrorConfig {
   style?: { [key: string]: string };
 }
 ```
+## Contribution
+
+We welcome contributions to `ps-error-control`! To contribute:
+
+1. **Fork the Repository**: Create a fork of the project on GitHub.
+2. **Clone and Set Up**: Clone your fork and install dependencies using `npm install`.
+3. **Make Changes**: Create a new branch for your feature or bug fix (`git checkout -b feature/your-feature`).
+4. **Test Your Changes**: Ensure your changes work and do not break existing functionality.
+5. **Submit a Pull Request**: Push your branch to your fork and create a pull request with a clear description of your changes.
+
+Please follow the Code of Conduct and ensure your code adheres to the project's coding standards.
+
+For bug reports or feature requests, open an issue on the GitHub repository.
 
 ## GitHub Repository
 
 For more details, source code, and updates, visit the [GitHub repository](https://github.com/Prasannajaga/error-form-control.git).
+
+
+---
+
+Made with ❤️ by the [@Prasanna](https://github.com/Prasannajaga).
